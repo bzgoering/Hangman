@@ -6,11 +6,10 @@ done = False
 
 print("Welcome to Hangman")
 
-def play():
+def play(hangmanOutput):
     exit = False
     win = False
     guesses = 0
-    print(secretWord)
     while not exit:
         #gets user input
         userGuess = input("Please guess a letter or the word: ")
@@ -21,29 +20,56 @@ def play():
             guesses += 1
         #if user guesses letter
         elif secretWord.find(userGuess[0:1]) > -1:
-            guesses += 1
             print("Letter found")
+            NewhangmanOutput = toString(secretWord,hangmanOutput, userGuess)
+            hangmanOutput = NewhangmanOutput
+            outputToString(hangmanOutput)
+
         #user guess incorrect
         else:
+            guesses += 1
             print("Incorrect")
-            
+            outputToString(hangmanOutput)
+
         #user hit max guesses
         if (guesses == 6):
             exit = True
             print("guesses maxed, the correct word was: ", secretWord)
-                
+        
+        if (hangmanOutput == secretWord):
+            win = True
+            exit = True
+            
     #print statement for win/lose
     if win:
         print("Congrat's you guessed the word")
     else:
         print("Better try next time")
+def startToString(word):
+    output = ""
+    for x in range(len(word)):
+        print("_ ",end = "")
+        output += ("_")
+    
+    print()
+    return(output)
 
-def toString():
-    #show the user length of word using _ _ _ and show users where their letter was found
-    #also add to play() if user guesses all letters to give them a win
+def outputToString(word):
+    newWord = ''
+    for x in range(len(word)):
+        newWord += word[x] + ' '
+    
+    print(newWord)
+   
 
-    print("working...")
-
+#work in progress
+def toString(secretWord, past, guess):
+    for x in range(len(past)):
+        if (secretWord[x] == guess):
+            past = past[:x] + guess + past[x+1:]
+    return(past)
+    
+    
 while not done:
     print("0. Quit")
     print("1. Play")
@@ -58,7 +84,8 @@ while not done:
         secretLength = len(secretWord)
         
         print("The random word is ", secretLength, "letters long")
-        play()
+        hangmanOutput = startToString(secretWord)
+        play(hangmanOutput)
 
         #adds new word
     elif userInput == "2":
