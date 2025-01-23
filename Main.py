@@ -2,9 +2,14 @@ import nltk
 import random
 from nltk.corpus import words
 wordList = words.words();
+customList = []
 done = False
+useCustomList = True
 
 print("Welcome to Hangman")
+if (input("Warning: you can not change you answer\nif you do not add anything to a the custom list the default list will be used instead\nWould you like to use a custom list(y/n): ") == "y"):
+    print("Using Custom List, Please make sure to add words")
+    useCustomList = False
 
 def play(hangmanOutput):
     exit = False
@@ -71,7 +76,7 @@ def toString(secretWord, past, guess):
     
     
 while not done:
-    print("0. Quit")
+    print("\n0. Quit")
     print("1. Play")
     print("2. add custom word")
     print("3. add to custom list")
@@ -96,8 +101,11 @@ while not done:
         else:
             print("word already in list\n")
     elif userInput == "3":
-        print("in progress")
-        
+        if useCustomList:
+            customList.append(input("Enter a word: "))
+            wordList = customList
+        else:
+            print("Warning you're currently not using the custom list")
     elif userInput == "0":
         done = True
     else:
